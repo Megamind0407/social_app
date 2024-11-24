@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Home, Users, Bell, MessageSquare, Search } from 'lucide-react';
 import { Button, Input  } from 'antd'
@@ -29,8 +29,12 @@ NavItem.defaultProps = {
     children: null,
 };
 
-export const Navbar = () => {
+export const Navbar = () => {   
+    const navigate = useNavigate(); // Hook to handle navigation
 
+    const handleSignIn = () => {
+        navigate('/signin'); // Redirect to the /signin route
+    };
     return (
         <nav className="border-b">
             <div className="flex items-center justify-between px-4 py-3 md:px-6">
@@ -39,21 +43,20 @@ export const Navbar = () => {
                         Hobbyly
                     </Link>
                     <div className="hidden md:flex space-x-4">
-                        <NavItem to="/home" icon={<Home className="h-4 w-4 mr-2" />} >
+                        <NavItem to="/" icon={<Home className="h-4 w-4 mr-2" />} >
                             Home
                         </NavItem>
-                        <NavItem to="/users" icon={<Users className="h-4 w-4 mr-2" />} >
+                        <NavItem to="/" icon={<Users className="h-4 w-4 mr-2" />} >
                             Users
                         </NavItem>
-                        <NavItem to="/notifications" icon={<Bell className="h-4 w-4 mr-2" />} >
+                        <NavItem to="/" icon={<Bell className="h-4 w-4 mr-2" />} >
                             Notifications
                         </NavItem>
-                        <NavItem to="/messages" icon={<MessageSquare className="h-4 w-4 mr-2" />} >
+                        <NavItem to="/" icon={<MessageSquare className="h-4 w-4 mr-2" />} >
                             Messages
                         </NavItem>
                     </div>
                 </div>
-            
             <div className='hidden md:flex items-center space-x-4'>
                 <div className="relative">
                     <Input 
@@ -64,7 +67,7 @@ export const Navbar = () => {
                     />
                     <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                 </div>
-                <Button type="text">Sign In</Button>
+                <Button type="text" onClick={handleSignIn}>Sign In</Button>
             </div>
             </div>
         </nav>
