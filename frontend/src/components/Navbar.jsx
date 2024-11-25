@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link , useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Home, Users, Bell, MessageSquare, Search } from 'lucide-react';
+import { Home, Users, Bell, MessageSquare, Search, Moon, Sun } from 'lucide-react';
 import { Button, Input  } from 'antd'
+import { ThemeContext } from './ThemeContext';
 
 function NavItem({ to, icon, children }) {
     return (
@@ -31,12 +32,12 @@ NavItem.defaultProps = {
 
 export const Navbar = () => {   
     const navigate = useNavigate(); // Hook to handle navigation
-
+    const {theme, toggleTheme} = useContext(ThemeContext)
     const handleSignIn = () => {
         navigate('/signin'); // Redirect to the /signin route
     };
     return (
-        <nav className="border-b">
+        <nav className="border-b dark:bg-slate-900 dark:text-white">
             <div className="flex items-center justify-between px-4 py-3 md:px-6">
                 <div className="flex items-center">
                     <Link to="/" className="text-2xl font-bold text-primary mr-6">
@@ -62,12 +63,23 @@ export const Navbar = () => {
                     <Input 
                     size='large'  
                     type="search"
-                    placeholder="Search..."
-                    className="pl-8 w-[200px] lg:w-[300px]"
+                    placeholder="Search..." 
+                    className="dark:bg-slate-900 pl-8 w-[200px] lg:w-[300px]"
                     />
                     <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                 </div>
-                <Button type="text" onClick={handleSignIn}>Sign In</Button>
+                <Button type="text" onClick={handleSignIn} className='dark:text-white'>Sign In</Button>
+                <button
+                        onClick={toggleTheme}
+                        className="flex items-center justify-center p-2 bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
+                        aria-label="Toggle Dark Mode"
+                    >
+                        {theme === 'light' ? (
+                            <Moon className="h-5 w-5 text-gray-700" />
+                        ) : (
+                            <Sun className="h-5 w-5 text-yellow-400" />
+                        )}
+                </button>
             </div>
             </div>
         </nav>
