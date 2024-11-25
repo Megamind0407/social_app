@@ -66,7 +66,7 @@ const testimonials = [
 export const Testimonials = () => {
     return (
         <section className='text-center pb-4'>
-            <h1 className='text-3xl font-semibold leading-tight mb-4 ' style={{ fontFamily: 'Dancing Script, cursive' }}>Our Happy Users</h1>
+            <h1 className='text-3xl font-extrabold leading-tight mb-4 ' style={{ fontFamily: 'Dancing Script, cursive' }}>Our Happy Users</h1>
             <div className="relative overflow-x-hidden px-4 pb-2">
                 <motion.div
                     className="flex items-center space-x-8"
