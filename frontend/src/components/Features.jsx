@@ -6,7 +6,7 @@ import { Telescope } from 'lucide-react';
 const Features = () => {
     return (
         <section className="features py-14 text-center">
-            <h2 className="text-4xl font-extrabold mb-10">Why Hobbyly?</h2>
+            <h2 className="text-4xl font-extrabold mb-10" style={{fontFamily: "Dancing Script, cursive"}}>Why Hobbyly?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
                 <div className="feature bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
                 <Users style= {{height: '100px', width:'50'}} className="mx-auto mb-6" />
