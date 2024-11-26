@@ -1,33 +1,47 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, Select, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
+const { Option } = Select;
 
 export const SignUp = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
+        hobbies: [],
     });
     const [error, setError] = useState('');
 
     const handleSignUp = (values) => {
-        const { username, email, password, confirmPassword } = values;
+        const { username, email, password, confirmPassword, hobbies } = values;
 
-        if (!username || !email || !password || !confirmPassword) {
-            setError('All fields are required.');
+        if (!username || !email || !password || !confirmPassword || hobbies.length === 0) {
+            setError('All fields are required, including hobbies.');
         } else if (password !== confirmPassword) {
             setError('Passwords do not match.');
         } else {
             setError('');
-            // Add your sign-up logic here
             message.success('Sign Up Successful');
-            console.log('Signing up:', formData);
+            // Log specific parts of the data to avoid circular reference errors
+            console.log('Signing up:', {
+                username,
+                email,
+                hobbies,
+            });
+            navigate('/signin');
         }
     };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleHobbiesChange = (selectedHobbies) => {
+        setFormData({ ...formData, hobbies: selectedHobbies });
     };
 
     return (
@@ -94,6 +108,28 @@ export const SignUp = () => {
                         />
                     </Form.Item>
 
+                    <Form.Item
+                        label="Hobbies"
+                        name="hobbies"
+                        rules={[{ required: true, message: 'Please select at least one hobby!' }]}
+                    >
+                        <Select
+                            mode="tags"
+                            placeholder="Select or type your hobbies"
+                            onChange={handleHobbiesChange}
+                            value={formData.hobbies}
+                        >
+                            <Option value="Photography">Photography</Option>
+                            <Option value="Gardening">Gardening</Option>
+                            <Option value="Cooking">Cooking</Option>
+                            <Option value="Traveling">Traveling</Option>
+                            <Option value="Gaming">Gaming</Option>
+                            <Option value="Reading">Reading</Option>
+                            <Option value="Driving">Driving</Option>
+                            <Option value="Dancing">Dancing</Option>
+                            <Option value="Singing">Singing</Option>
+                        </Select>
+                    </Form.Item>
                     <Form.Item>
                         <Button
                             type="primary"
@@ -101,12 +137,12 @@ export const SignUp = () => {
                             block
                             variant='filled'
                             color='default'
+                            onClick={navigate}
                         >
                             Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
-
                 <p className="text-sm text-center mt-4">
                     Already have an account? <a href="/signin" className="text-blue-500">Sign In</a>
                 </p>
