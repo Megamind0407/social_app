@@ -9,9 +9,12 @@ import { Route, Routes } from 'react-router-dom'
 import { SignIn } from './components/pages/SignIn'
 import { SignUp } from './components/pages/SignUp'
 import { ThemeContext } from './components/ThemeContext'; // Import ThemeContext
+import { Users } from './components/pages/Users';
+import { Home } from './components/pages/Home';
+import { Messages } from './components/pages/Messages';
 
 
-const HomePage = () => {
+const HobbylyPage = () => {
   return (
     <>
     <Navbar/>
@@ -23,6 +26,34 @@ const HomePage = () => {
   )
 }
 
+const HomePage = () => {
+  return(
+  <>
+  <Navbar/>
+  <Home/>
+  </>
+
+  )
+}
+
+const Message = () => {
+  return(
+    <>
+    <Navbar/>
+    <Messages/>
+    </>
+  )
+}
+
+const UserPage = () => {
+  return(
+    <>
+    <Navbar/>
+    <Users/>
+    </>
+  )
+}
+
 export const App = () => {
   const { theme } = useContext(ThemeContext); // Get the current theme
   return (
@@ -30,7 +61,10 @@ export const App = () => {
     <Routes>
       <Route path='/signup' element= {<SignUp/>}/>
       <Route path='/signin' element= {<SignIn/>}/>
-      <Route path='/' element= {<HomePage/>}/>
+      <Route path='/' element= {<HobbylyPage/>}/>
+      <Route path='/home' element= {<HomePage/>}/>
+      <Route path='/users' element= {<UserPage/>}/>
+      <Route path='/messages' element= {<Message/>}/>
     </Routes>
     </div>
   )
