@@ -1,8 +1,11 @@
-// routes/authRoutes.js
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Import JWT for session handling
 const User = require('../models/UserModel'); // Import the User model
 const router = express.Router();
+
+// Secret key for JWT
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Sign Up Route
 router.post('/signup', async (req, res) => {
@@ -30,6 +33,43 @@ router.post('/signup', async (req, res) => {
 
         // Send success response
         res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error, please try again later' });
+    }
+});
+
+// Sign In Route
+router.post('/signin', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Check if the user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+
+        // Compare the entered password with the hashed password in the database
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+
+        // Generate a JWT token
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+
+        // Send the token and user data in the response
+        res.status(200).json({ 
+            message: 'Sign in successful', 
+            token, 
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                hobbies: user.hobbies,
+            }
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error, please try again later' });
