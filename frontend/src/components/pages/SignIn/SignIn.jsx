@@ -1,24 +1,16 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button} from 'antd';
+import useSignIn from '../../hooks/useSignIn'; // Adjust the path as necessary
 
 export const SignIn = () => {
-    const navigate = useNavigate();
+    const { signIn, isLoading, error } = useSignIn(); // Destructure the hook's return
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
-    const handleSignIn = (values) => {
+    const handleSubmit = (values) => {
         const { email, password } = values;
-        if (!email || !password) {
-            setError('All fields are required.');
-        } else {
-            setError('');
-            message.success('Sign In Successful');
-            navigate('/home')
-            console.log('Signing in:', { email, password });
-        }
+        signIn(email, password);  // Call the signIn function from the hook
     };
 
     return (
@@ -30,7 +22,7 @@ export const SignIn = () => {
                 <Form
                     name="signInForm"
                     initialValues={{ remember: true }}
-                    onFinish={handleSignIn}
+                    onFinish={handleSubmit}
                     layout="vertical"
                 >
                     <Form.Item
@@ -65,6 +57,7 @@ export const SignIn = () => {
                             block
                             variant='filled'
                             color='default'
+                            loading={isLoading} // Show a loading spinner while the request is in progress
                         >
                             Sign In
                         </Button>

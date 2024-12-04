@@ -1,47 +1,20 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
-import { Form, Input, Button, Select, message } from 'antd';
+import React from 'react';
+import { Form, Input, Button, Select} from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useSignUp } from '../../hooks/useSignUp'; // Import the custom hook
 
 const { Option } = Select;
 
 export const SignUp = () => {
-    const navigate = useNavigate()
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        hobbies: [],
-    });
-    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { formData, error, handleSignUp, handleChange, handleHobbiesChange } = useSignUp();
 
-    const handleSignUp = (values) => {
-        const { username, email, password, confirmPassword, hobbies } = values;
-
-        if (!username || !email || !password || !confirmPassword || hobbies.length === 0) {
-            setError('All fields are required, including hobbies.');
-        } else if (password !== confirmPassword) {
-            setError('Passwords do not match.');
-        } else {
-            setError('');
-            message.success('Sign Up Successful');
-            // Log specific parts of the data to avoid circular reference errors
-            console.log('Signing up:', {
-                username,
-                email,
-                hobbies,
-            });
+    const onFinish = (values) => {
+        // If form is valid, navigate to the SignIn page
+        if (handleSignUp(values)) {
             navigate('/signin');
         }
-    };
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleHobbiesChange = (selectedHobbies) => {
-        setFormData({ ...formData, hobbies: selectedHobbies });
     };
 
     return (
@@ -53,7 +26,7 @@ export const SignUp = () => {
                 <Form
                     name="signUpForm"
                     initialValues={{ remember: true }}
-                    onFinish={handleSignUp}
+                    onFinish={onFinish}
                     layout="vertical"
                 >
                     <Form.Item
@@ -96,19 +69,6 @@ export const SignUp = () => {
                     </Form.Item>
 
                     <Form.Item
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        rules={[{ required: true, message: 'Please confirm your password!' }]}
-                    >
-                        <Input.Password
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            placeholder="Confirm your password"
-                        />
-                    </Form.Item>
-
-                    <Form.Item
                         label="Hobbies"
                         name="hobbies"
                         rules={[{ required: true, message: 'Please select at least one hobby!' }]}
@@ -130,19 +90,20 @@ export const SignUp = () => {
                             <Option value="Singing">Singing</Option>
                         </Select>
                     </Form.Item>
+
                     <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"
                             block
-                            variant='filled'
-                            color='default'
-                            onClick={navigate}
+                            variant="filled"
+                            color="default"
                         >
                             Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
+
                 <p className="text-sm text-center mt-4">
                     Already have an account? <a href="/signin" className="text-blue-500">Sign In</a>
                 </p>

@@ -6,12 +6,12 @@ import Features from './components/Features'
 import {Testimonials}  from './components/Testimonials'
 import Footer from './components/Footer'
 import { Route, Routes } from 'react-router-dom'
-import { SignIn } from './components/pages/SignIn'
-import { SignUp } from './components/pages/SignUp'
-import { ThemeContext } from './components/ThemeContext'; // Import ThemeContext
-import { Users } from './components/pages/Users';
-import { Home } from './components/pages/Home';
-import { Messages } from './components/pages/Messages';
+import { ThemeContext } from './components/ThemeContext'; 
+import  {SignIn}  from './components/pages/SignIn/SignIn';
+import { SignUp } from './components/pages/SignUp/SignUp'// Import ThemeContext
+import { Users } from './components/pages/Users/Users';
+import { Home } from './components/pages/Home/Home';
+import { Messages } from './components/pages/Messages/Messages';
 
 
 const HobbylyPage = () => {

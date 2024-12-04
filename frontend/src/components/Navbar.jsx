@@ -1,33 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useContext, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Home, Users, Bell, MessageSquare, Search, Moon, Sun } from 'lucide-react';
-import { Button, Input,Avatar, Dropdown, Menu} from 'antd';
-import { ThemeContext } from './ThemeContext';
-
-function NavItem({ to, icon, children }) {
-    return (
-        <Link
-            to={to}
-            className="flex items-center text-sm font-medium text-muted-foreground hover:text-purple-600 dark:hover:text-white"
-        >
-            {icon}
-            {children}
-        </Link>
-    );
-}
-
-NavItem.propTypes = {
-    to: PropTypes.string.isRequired,
-    icon: PropTypes.node,
-    children: PropTypes.node,
-};
-
-NavItem.defaultProps = {
-    icon: null,
-    children: null,
-};
+import React, { useContext, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Avatar, Dropdown, Menu } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Home, Users, Bell, MessageSquare, Moon, Sun } from "lucide-react";
+import { ThemeContext } from "./ThemeContext";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -35,67 +12,38 @@ export const Navbar = () => {
 
     // Authentication state
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        // Check if the user is logged in from localStorage
+        const loggedIn = localStorage.getItem("isLoggedIn") === "true";
         setIsLoggedIn(loggedIn);
     }, []);
 
-    const handleSignIn = () => {
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn(true);
-        navigate('/signin');
-    };
-
     const handleSignOut = () => {
-        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("userToken");
         setIsLoggedIn(false);
-        navigate('/signin');
+        navigate("/signin"); // Redirect to sign-in page on logout
     };
 
-    const handleAvatarClick = () => {
-        setShowDropdown((prev) => !prev);
-        const menu = (
-            <Menu
-                items={[
-                    {
-                        key: 'profile',
-                        label: (
-                            <div
-                                onClick={() => navigate('/profile')}
-                                className="cursor-pointer hover:bg-gray-100 p-2"
-                            >
-                                Profile
-                            </div>
-                        ),
-                    },
-                    {
-                        key: 'myposts',
-                        label: (
-                            <div
-                                onClick={() => navigate('/myposts')}
-                                className="cursor-pointer hover:bg-gray-100 p-2"
-                            >
-                                My Posts
-                            </div>
-                        ),
-                    },
-                    {
-                        key: 'logout',
-                        label: (
-                            <div
-                                onClick={handleSignOut}
-                                className="cursor-pointer hover:bg-gray-100 p-2 text-red-600"
-                            >
-                                Logout
-                            </div>
-                        ),
-                    },
-                ]}
-            />
-        )
-    };
+    const menu = (
+        <Menu
+            items={[
+                {
+                    key: "logout",
+                    label: (
+                        <div
+                            onClick={handleSignOut}
+                            className="cursor-pointer hover:bg-gray-100 p-2 text-red-600"
+                        >
+                            Logout
+                        </div>
+                    ),
+                },
+            ]}
+        />
+    );
+
     return (
         <nav className="border-b dark:bg-slate-900 dark:text-white">
             <div className="flex items-center justify-between px-4 py-3 md:px-6">
@@ -104,40 +52,36 @@ export const Navbar = () => {
                         Hobbyly
                     </Link>
                     <div className="hidden md:flex space-x-4">
-                        <NavItem to="/home" icon={<Home className="h-4 w-4 mr-2" />}>
-                            Home
-                        </NavItem>
-                        <NavItem to="/users" icon={<Users className="h-4 w-4 mr-2" />}>
-                            Users
-                        </NavItem>
-                        <NavItem to="/home" icon={<Bell className="h-4 w-4 mr-2" />}>
-                            Notifications
-                        </NavItem>
-                        <NavItem to="/messages" icon={<MessageSquare className="h-4 w-4 mr-2" />}>
-                            Messages
-                        </NavItem>
+                        <Link to="/home" className="flex items-center text-sm font-medium text-muted-foreground hover:text-purple-600 dark:hover:text-white">
+                            <Home className="h-4 w-4 mr-2" /> Home
+                        </Link>
+                        <Link to="/users" className="flex items-center text-sm font-medium text-muted-foreground hover:text-purple-600 dark:hover:text-white">
+                            <Users className="h-4 w-4 mr-2" /> Users
+                        </Link>
+                        <Link to="/home" className="flex items-center text-sm font-medium text-muted-foreground hover:text-purple-600 dark:hover:text-white">
+                            <Bell className="h-4 w-4 mr-2" /> Notifications
+                        </Link>
+                        <Link to="/messages" className="flex items-center text-sm font-medium text-muted-foreground hover:text-purple-600 dark:hover:text-white">
+                            <MessageSquare className="h-4 w-4 mr-2" /> Messages
+                        </Link>
                     </div>
                 </div>
                 <div className="hidden md:flex items-center space-x-4">
-                    <div className="relative">
-                        <Input
-                            size="large"
-                            type="search"
-                            placeholder="Search..."
-                            className="dark:bg-slate-900 pl-8 w-[200px] lg:w-[300px] dark:text-white"
-                        />
-                        <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
-                    </div>
-                        <Button type="text" onClick={handleSignIn} className="dark:text-white">
+                    {isLoggedIn ? (
+                        <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
+                            <Avatar icon={<UserOutlined />} className="cursor-pointer" />
+                        </Dropdown>
+                    ) : (
+                        <Button type="text" onClick={() => navigate("/signin")} className="dark:text-white">
                             Sign In
                         </Button>
-                    
+                    )}
                     <button
                         onClick={toggleTheme}
                         className="flex items-center justify-center p-2 bg-gray-200 dark:bg-gray-800 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
                         aria-label="Toggle Dark Mode"
                     >
-                        {theme === 'light' ? (
+                        {theme === "light" ? (
                             <Moon className="h-5 w-5 text-gray-700" />
                         ) : (
                             <Sun className="h-5 w-5 text-yellow-400" />
