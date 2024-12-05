@@ -7,12 +7,11 @@ import {Testimonials}  from './components/Testimonials'
 import Footer from './components/Footer'
 import { Route, Routes } from 'react-router-dom'
 import { ThemeContext } from './components/ThemeContext'; 
-import  {SignIn}  from './components/pages/SignIn/SignIn';
+import { SignIn }  from './components/pages/SignIn/SignIn';
 import { SignUp } from './components/pages/SignUp/SignUp'// Import ThemeContext
 import { Users } from './components/pages/Users/Users';
 import { Home } from './components/pages/Home/Home';
 import { Messages } from './components/pages/Messages/Messages';
-
 
 const HobbylyPage = () => {
   return (
@@ -25,7 +24,6 @@ const HobbylyPage = () => {
     </>
   )
 }
-
 const HomePage = () => {
   return(
   <>
@@ -35,7 +33,6 @@ const HomePage = () => {
 
   )
 }
-
 const Message = () => {
   return(
     <>
@@ -44,7 +41,6 @@ const Message = () => {
     </>
   )
 }
-
 const UserPage = () => {
   return(
     <>
@@ -53,7 +49,6 @@ const UserPage = () => {
     </>
   )
 }
-
 export const App = () => {
   const { theme } = useContext(ThemeContext); // Get the current theme
   return (
