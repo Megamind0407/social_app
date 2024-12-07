@@ -5,24 +5,25 @@ const UserSchema = new mongoose.Schema(
     {
         username: {
             type: String,
-            required: true,
-            unique: true, // Ensure the username is unique
-            trim: true,   // Remove extra spaces
+            required: [true, 'Username is required'],
+            unique: true,
+            trim: true,
         },
         email: {
             type: String,
-            required: true,
-            unique: true, // Ensure the email is unique
-            lowercase: true,  // Automatically convert email to lowercase
-            match: [/\S+@\S+\.\S+/, 'Please provide a valid email address'], // Email regex validation
+            required: [true, 'Email is required'],
+            unique: true,
+            lowercase: true, // Automatically convert email to lowercase
+            match: [/\S+@\S+\.\S+/, 'Please provide a valid email address'],
         },
         password: {
             type: String,
-            required: true,
+            required: [true, 'Password is required'],
+            minlength: [6, 'Password must be at least 6 characters'],
         },
         hobbies: {
-            type: [String], // An array of strings to store multiple hobbies
-            default: [],    // Default to an empty array if not provided
+            type: [String],
+            default: [],
         },
     },
     {
@@ -32,15 +33,25 @@ const UserSchema = new mongoose.Schema(
 
 // Hash password before saving
 UserSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next(); // Only hash if password is modified
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
+    // Only hash the password if it has been modified
+    if (!this.isModified('password')) return next();
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (err) {
+        return next(err); // Pass error to the next middleware
+    }
 });
 
-// Method to compare passwords (useful for sign-in)
+// Method to compare passwords
 UserSchema.methods.comparePassword = async function (candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    try {
+        return await bcrypt.compare(candidatePassword, this.password);
+    } catch (err) {
+        throw new Error('Error comparing passwords'); // Throw specific error for debugging
+    }
 };
 
 module.exports = mongoose.model('User', UserSchema);
