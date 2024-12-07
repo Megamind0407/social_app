@@ -10,18 +10,25 @@ const useSignIn = () => {
     const signIn = async (email, password) => {
         setIsLoading(true);
         try {
+            console.log("Sending sign-in request with:", { email, password }); // Debug
             const response = await axios.post("/api/auth/signin", { email, password });
+            console.log("Sign-in response:", response.data); // Debug
             const token = response.data.token;
             localStorage.setItem("isLoggedIn", "true");
             localStorage.setItem("userToken", token);
-            navigate("/home");  // Redirect to home page after successful login
+            navigate("/home");
         } catch (err) {
-            setError("Sign In Failed. Please check your credentials.");
-            console.error("Error during sign-in:", err);
+            console.error("Error during sign-in:", err.response || err);
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("Sign In Failed. Please check your credentials.");
+            }
         } finally {
             setIsLoading(false);
         }
     };
+    
 
     return { signIn, isLoading, error };
 };
