@@ -7,8 +7,9 @@ import {Testimonials}  from './components/Testimonials'
 import Footer from './components/Footer'
 import { Route, Routes } from 'react-router-dom'
 import { ThemeContext } from './components/ThemeContext'; 
+// import { useAuth } from './components/context/AuthContext';
 import { SignIn }  from './components/pages/SignIn/SignIn';
-import { SignUp } from './components/pages/SignUp/SignUp'// Import ThemeContext
+import { SignUp } from './components/pages/SignUp/SignUp'
 import { Users } from './components/pages/Users/Users';
 import { Home } from './components/pages/Home/Home';
 import { Messages } from './components/pages/Messages/Messages';
