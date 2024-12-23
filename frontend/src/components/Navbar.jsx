@@ -45,7 +45,7 @@ export const Navbar = () => {
     );
 
     return (
-        <nav className="border-b dark:bg-slate-900 dark:text-white">
+        <nav className="border-b dark:bg-slate-900 dark:text-slate-300">
             <div className="flex items-center justify-between px-4 py-3 md:px-6">
                 <div className="flex items-center">
                     <Link to="/" className="text-2xl font-bold text-primary mr-6">

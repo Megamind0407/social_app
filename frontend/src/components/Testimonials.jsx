@@ -65,8 +65,8 @@ const testimonials = [
 
 export const Testimonials = () => {
     return (
-        <section className='text-center pb-4 dark:bg-slate-900'>
-            <h1 className='text-3xl font-extrabold leading-tight mb-4 dark:text-white' style={{ fontFamily: 'Dancing Script, cursive' }}>Our Happy Users</h1>
+        <section className='text-center pb-4 dark:bg-slate-950'>
+            <h1 className='text-3xl font-extrabold leading-tight mb-4 dark:text-slate-300' style={{ fontFamily: 'Dancing Script, cursive' }}>Our Happy Users</h1>
             <div className="relative overflow-x-hidden px-4 pb-2">
                 <motion.div
                     className="flex items-center space-x-8"
@@ -82,7 +82,7 @@ export const Testimonials = () => {
                     {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.id}
-                            className="min-w-[350px] bg-white p-6 rounded-lg shadow-lg mx-4"
+                            className="min-w-[350px] bg-white p-6 rounded-lg shadow-lg mx-4 dark:bg-slate-800"
                             style={{
                                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
                             }}
@@ -93,9 +93,9 @@ export const Testimonials = () => {
                                     alt={testimonial.name}
                                     className="w-16 h-16 rounded-full object-cover mr-4"
                                 />
-                                <h3 className="text-xl font-semibold">{testimonial.name}</h3>
+                                <h3 className="text-xl font-semibold dark:text-slate-300">{testimonial.name}</h3>
                             </div>
-                            <p className="text-gray-600 italic text-lg">{testimonial.testimonial}</p>
+                            <p className="text-gray-600 dark:text-gray-400 italic text-lg">{testimonial.testimonial}</p>
                         </div>
                     ))}
                 </motion.div>
