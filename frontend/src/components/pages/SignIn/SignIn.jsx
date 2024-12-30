@@ -1,12 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useContext } from 'react';
 import { Form, Input, Button } from 'antd';
-import useSignIn from '../../hooks/useSignIn'; // Adjust the path as necessary
+import useSignIn from '../../hooks/useSignIn';
 import { ThemeContext } from '../../ThemeContext';
-import { Moon, Sun } from 'lucide-react'; // Ant Design icons for Moon and Sun
+import { Moon, Sun,ArrowLeft } from 'lucide-react'; 
+import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
-    const { signIn, isLoading, error } = useSignIn(); // Destructure the hook's return
+    const { signIn, isLoading, error } = useSignIn(); 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { theme, toggleTheme } = useContext(ThemeContext);
@@ -15,10 +16,15 @@ export const SignIn = () => {
         const { email, password } = values;
         signIn(email, password); // Call the signIn function from the hook
     };
+    const navigate = useNavigate();
+    const handleNavigate = () => {
+        navigate('/');
+    }
 
     return (
         <div className={`flex items-center justify-center h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
-            {/* Dark Mode Toggle Button */}
+            <div className='absolute top-4 left-4 flex items-center justify-center p-2 cursor-pointer gap-2 dark:text-white hover:underline' onClick={handleNavigate}>
+            <ArrowLeft size={16} strokeWidth={1.5} />Go to Dashboard</div>
             <button
                 onClick={toggleTheme}
                 className="absolute top-4 right-4 flex items-center justify-center p-2 bg-gray-200 dark:bg-gray-900 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700"
@@ -72,8 +78,6 @@ export const SignIn = () => {
                             type="primary"
                             htmlType="submit"
                             block
-                            variant="filled"
-                            color="default"
                             loading={isLoading} // Show a loading spinner while the request is in progress
                         >
                             Sign In

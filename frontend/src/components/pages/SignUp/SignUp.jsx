@@ -3,12 +3,17 @@ import React from 'react';
 import { Form, Input, Button, Select} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '../../hooks/useSignUp'; // Import the custom hook
-
+import { ArrowLeft } from 'lucide-react'
 const { Option } = Select;
 
 export const SignUp = () => {
     const navigate = useNavigate();
     const { formData, error, handleSignUp, handleChange, handleHobbiesChange } = useSignUp();
+
+
+    const handleNavigate = () => {
+        navigate('/');
+    }
 
     const onFinish = (values) => {
         // If form is valid, navigate to the SignIn page
@@ -18,7 +23,9 @@ export const SignUp = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-none-100">
+        <div className="flex items-center justify-center h-screen bg-none-100">\
+            <div className='absolute top-4 left-4 flex items-center justify-center p-2 cursor-pointer hover:underline gap-1' onClick={handleNavigate}>
+            <ArrowLeft size={16} strokeWidth={1.5} />Go to Dashboard</div>
             <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
                 <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Sign Up</h2>
                 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
