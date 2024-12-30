@@ -72,7 +72,7 @@ export const Testimonials = () => {
                     className="flex items-center space-x-8"
                     initial={{ x: "70%" }}
                     animate={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
+                    whileHover={{x: 0}}
                     transition={{
                         repeat: Infinity,
                         duration: 20,
